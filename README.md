@@ -79,6 +79,3 @@ Tại terminal (đang kích hoạt môi trường ảo), gõ lệnh:
   streamlit run app.py
   ```
 
-```
-
-```
