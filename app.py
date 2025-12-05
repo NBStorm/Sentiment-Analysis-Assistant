@@ -48,13 +48,9 @@ def load_history():
 # Khởi tạo pipeline (Chạy 1 lần và cache lại để không load lại model mỗi lần click)
 @st.cache_resource
 def load_model():
-    # Mẹo để đạt điểm cao: Model base (phobert-base-v2) chưa được fine-tune cho sentiment 
-    # thường sẽ trả về kết quả lung tung nếu dùng pipeline trực tiếp. 
-    # Để đạt độ chính xác >= 65%, ta nên dùng model đã fine-tune sẵn cho tiếng Việt.
-    # Model gợi ý: "wonrax/phobert-base-vietnamese-sentiment" hoặc "uit-nlp/vietnamese-sentiment-analysis"
+
     
     model_name = "wonrax/phobert-base-vietnamese-sentiment" 
-    # Nếu máy yếu quá có thể dùng "distilbert-base-multilingual-cased" nhưng độ chính xác thấp hơn
     nlp_pipeline = pipeline("sentiment-analysis", model=model_name)
     return nlp_pipeline
 
@@ -100,7 +96,7 @@ def main():
             # 1. Tiền xử lý
             clean_text = preprocess_text(user_input)
             
-            # 2. Gọi Model (Hiển thị spinner xoay xoay cho chuyên nghiệp)
+            # 2. Gọi Model 
             with st.spinner('Đang phân tích...'):
                 nlp = load_model()
                 result = nlp(clean_text)[0] # Kết quả trả về dạng [{'label': 'POS', 'score': 0.99}]
@@ -111,8 +107,6 @@ def main():
                 "NEG": "TIÊU CỰC 😡", 
                 "NEU": "TRUNG TÍNH 😐"
             }
-            # Một số model trả về LABEL_0, LABEL_1, cần in thử result ra để map cho đúng
-            # Với model wonrax: POS, NEG, NEU
             
             sentiment_label = label_map.get(result['label'], result['label'])
             score = round(result['score'], 4)

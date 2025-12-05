@@ -44,3 +44,41 @@ Sentiment-Analysis-Assistant/
 ├── sentiment_history.db    # Database (Tự tạo khi chạy app)
 └── README.md               # Tài liệu hướng dẫn
 ```
+
+## ⚙️ Hướng dẫn Cài đặt (Installation)
+
+Vui lòng thực hiện lần lượt theo các bước sau:
+
+### Bước 1: Tải mã nguồn
+
+Tải thư mục dự án về máy tính và giải nén (nếu có). Mở **Terminal** (hoặc CMD/PowerShell) tại thư mục dự án.
+
+### Bước 2: Tạo môi trường ảo (Khuyên dùng)
+
+Việc này giúp tránh xung đột thư viện với hệ thống.
+
+- ```bash
+  python -m venv venv
+  venv\Scripts\activate
+  ```
+
+### Bước 3: Cài đặt thư viện
+
+Chạy lệnh sau để cài đặt toàn bộ các gói cần thiết:
+
+- ```bash
+  pip install streamlit transformers torch pandas
+  ```
+
+## 🚀 Hướng dẫn Sử dụng (Usage)
+
+Khởi chạy ứng dụng
+Tại terminal (đang kích hoạt môi trường ảo), gõ lệnh:
+
+- ```bash
+  streamlit run app.py
+  ```
+
+```
+
+```
