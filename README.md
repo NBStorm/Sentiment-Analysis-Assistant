@@ -40,7 +40,7 @@ Dự án sử dụng kỹ thuật **Transfer Learning** với các mô hình **T
 Sentiment-Analysis-Assistant/
 ├── venv/                   # Môi trường ảo (Virtual Environment)
 ├── app.py                  # Mã nguồn chính của ứng dụng
-├── requirements.txt        # Danh sách thư viện cần cài đặt
+├── data.csv                # Data
 ├── sentiment_history.db    # Database (Tự tạo khi chạy app)
 └── README.md               # Tài liệu hướng dẫn
 ```
@@ -78,4 +78,3 @@ Tại terminal (đang kích hoạt môi trường ảo), gõ lệnh:
 - ```bash
   streamlit run app.py
   ```
-
