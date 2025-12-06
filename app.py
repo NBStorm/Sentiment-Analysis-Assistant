@@ -36,12 +36,20 @@ def save_to_db(text, sentiment, score):
     conn.close()
 
 # Hàm lấy lịch sử (Giới hạn 50 dòng mới nhất như yêu cầu)
-def load_history():
+def load_history(limit=50, offset=0):
     conn = sqlite3.connect('sentiment_history.db')
-    # Load vào DataFrame của Pandas để hiển thị bảng cho đẹp
-    df = pd.read_sql_query("SELECT text, sentiment, timestamp FROM sentiments ORDER BY id DESC LIMIT 50", conn)
+    query = f"SELECT text, sentiment, timestamp FROM sentiments ORDER BY id DESC LIMIT {limit} OFFSET {offset}"
+    df = pd.read_sql_query(query, conn)
     conn.close()
     return df
+
+def get_total_rows():
+    conn = sqlite3.connect('sentiment_history.db')
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM sentiments")
+    total = c.fetchone()[0]
+    conn.close()
+    return total
 
 # --- PHẦN 2: NLP & XỬ LÝ TIẾNG VIỆT ---
 
@@ -63,7 +71,9 @@ def preprocess_text(text):
         "ko": "không", "hok": "không", "khong": "không",
         "dc": "được", "đc": "được",
         "vuii": "vui", "thik": "thích",
-        "bt": "bình thường", "rat": "rất"
+        "bt": "bình thường", "rat": "rất",
+        "buon": "buồn", "bun": "buồn",
+        "ghet": "ghét", "yeu": "yêu",
     }
     
     words = text.split()
@@ -80,8 +90,24 @@ def main():
     st.sidebar.header("📜 Lịch sử Phân loại")
     if st.sidebar.button("Tải lại lịch sử"):
         st.rerun()
-    
-    history_df = load_history()
+
+    # Phân trang cho lịch sử
+    PAGE_SIZE = 50
+    if "history_page" not in st.session_state:
+        st.session_state["history_page"] = 0
+
+    total_rows = get_total_rows()
+    total_pages = (total_rows - 1) // PAGE_SIZE + 1 if total_rows > 0 else 1
+
+    col1, col2, col3 = st.sidebar.columns([1,2,1])
+    if col1.button("⬅️", key="prev_page") and st.session_state["history_page"] > 0:
+        st.session_state["history_page"] -= 1
+    if col3.button("➡️", key="next_page") and st.session_state["history_page"] < total_pages - 1:
+        st.session_state["history_page"] += 1
+
+    offset = st.session_state["history_page"] * PAGE_SIZE
+    history_df = load_history(limit=PAGE_SIZE, offset=offset)
+    st.sidebar.markdown(f"Trang {st.session_state['history_page']+1}/{total_pages}")
     st.sidebar.dataframe(history_df, hide_index=True)
 
     # Khu vực chính
@@ -90,7 +116,7 @@ def main():
     if st.button("Phân loại cảm xúc"):
         if not user_input:
             st.warning("⚠️ Vui lòng nhập văn bản trước khi phân loại!")
-        elif len(user_input) < 2: # Bắt lỗi nhập quá ngắn
+        elif len(user_input) < 5: # Bắt lỗi nhập quá ngắn
             st.error("⚠️ Câu quá ngắn, vui lòng nhập lại!")
         else:
             # 1. Tiền xử lý
