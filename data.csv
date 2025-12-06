@@ -1,0 +1,11 @@
+﻿Câu đầu vào (Input),Nhãn mong đợi,Kết quả thực tế,Đánh giá,Ghi chú
+Hôm nay tôi rất vui,POSITIVE,POSITIVE, Đúng,Câu chuẩn
+Món ăn này dở quá,NEGATIVE,NEGATIVE, Đúng,Câu chuẩn
+Thời tiết bình thường,NEUTRAL,NEUTRAL, Đúng,Câu chuẩn
+Rat vui hom nay,POSITIVE,POSITIVE, Đúng,Không dấu
+Công việc ổn định,NEUTRAL,NEUTRAL, Đúng,Câu chuẩn
+Phim xem cũng dc,POSITIVE,POSITIVE, Đúng,Viết tắt (dc)
+Thái độ phục vụ ko tốt,NEGATIVE,NEGATIVE, Đúng,Viết tắt (ko)
+Hàng chất lượng kém,NEGATIVE,NEGATIVE, Đúng,Câu ngắn
+Tôi cảm thấy bt,NEUTRAL,NEUTRAL, Đúng,Viết tắt (bt)
+Không có cảm xúc mạnh với sản phẩm này,NEUTRAL,NEGATIVE, Sai,Cảm thán
